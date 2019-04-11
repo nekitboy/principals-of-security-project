@@ -70,19 +70,27 @@ class TestSecurity():
     def encrypt(self, encryptor, data):
         a = copy.deepcopy(encryptor)
         d = copy.deepcopy(data)
-        return a(data=d)
+        result = a(data=d)
+        del a
+        del d
+        return result
 
     @profile1
     def decrypt(self, decryptor, data):
         a = copy.deepcopy(decryptor)
         d = copy.deepcopy(data)
-        return a(data=d)
+        result = a(data=d)
+        del a
+        del d
+        return result
 
 
     def run(self, encryptor, decryptor):
 
         results = []
         for i, cur_data in enumerate(self.data):
+
+
 
             test = dict()
             test['id'] = i
@@ -96,6 +104,7 @@ class TestSecurity():
                 data = cur_data.encode('utf-8')
             test['data'] = data
 
+            temp, self.null_memory = empty()
             self.start_timer()
 
             encrypted, memory = self.encrypt(encryptor=encryptor, data=data)
@@ -104,6 +113,7 @@ class TestSecurity():
             test['memory_to_encrypt'] = (memory - self.null_memory) * 1024
             test['encrypted'] = encrypted
 
+            temp, self.null_memory = empty()
             self.start_timer()
             decrypted, memory = self.decrypt(decryptor=decryptor, data=encrypted)
             test['time_to_decrypt'] = self.stop_timer()

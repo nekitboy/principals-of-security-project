@@ -1,8 +1,11 @@
 from des import triple_des
 import json
 from environment import TestSecurity, serialize
+from blowfish import Blowfish
+
 
 key = '0' * 24
+blowfish_m = Blowfish()
 triple_des_m = triple_des(key=key, padmode=2)
 t = TestSecurity('3-DES', ['123', 'Hello World', 'ASDKMASKFMASKLDMASDMKAS'*100, '123'])
 

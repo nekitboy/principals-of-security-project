@@ -70,7 +70,7 @@ class TestSecurity():
     def encrypt(self, encryptor, data):
         a = copy.deepcopy(encryptor)
         d = copy.deepcopy(data)
-        if self.algo == 'AES':
+        if self.algo == 'AES-128' or self.algo == 'AES-256':
             d = bytearray(d)
             while len(d) % 16 != 0:
                 d.append(0)
@@ -78,15 +78,6 @@ class TestSecurity():
             result = bytearray()
             for block in blocks:
                 result += a(bytes(block))
-            result = bytes(result)
-        elif self.algo == 'Blowfish':
-            d = d.decode('utf-8')
-            while len(d) % 8 != 0:
-                d += '0'
-            blocks = [d[i:i + 8] for i in range(0, len(data), 8)]
-            result = bytearray()
-            for block in blocks:
-                result += bytes(a(block), 'utf-8')
             result = bytes(result)
         else:
             result = a(d)
@@ -98,7 +89,7 @@ class TestSecurity():
     def decrypt(self, decryptor, data):
         a = copy.deepcopy(decryptor)
         d = copy.deepcopy(data)
-        if self.algo == 'AES':
+        if self.algo == 'AES-128' or self.algo == 'AES-256':
             d = bytearray(d)
             while len(d) % 16 != 0:
                 d.append(0)
@@ -106,15 +97,6 @@ class TestSecurity():
             result = bytearray()
             for block in blocks:
                 result += a(bytes(block))
-            result = bytes(result)
-        elif self.algo == 'Blowfish':
-            d = d.decode('utf-8')
-            while len(d) % 8 != 0:
-                d += '0'
-            blocks = [d[i:i + 8] for i in range(0, len(data), 8)]
-            result = bytearray()
-            for block in blocks:
-                result += bytes(a(block), 'utf-8')
             result = bytes(result)
         else:
             result = a(d)

@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 class Ranker:
     def __init__(self, results):
@@ -37,9 +38,9 @@ class Ranker:
         indexed = {}
         for result in self.results:
             if result['algorithm'] in indexed:
-                indexed[result['algorithm']].append(result['memory_to_encrypt'])
+                indexed[result['algorithm']].append(result['memory_to_encrypt'] + 0.1)
             else:
-                indexed[result['algorithm']] = [result['memory_to_encrypt']]
+                indexed[result['algorithm']] = [result['memory_to_encrypt'] + 0.1]
         indexed_avg = {}
         for k, v in indexed.items():
             indexed_avg[k] = np.average(v)
@@ -53,9 +54,9 @@ class Ranker:
         indexed = {}
         for result in self.results:
             if result['algorithm'] in indexed:
-                indexed[result['algorithm']].append(result['time_to_decrypt'])
+                indexed[result['algorithm']].append(result['time_to_decrypt'] + 0.1)
             else:
-                indexed[result['algorithm']] = [result['time_to_decrypt']]
+                indexed[result['algorithm']] = [result['time_to_decrypt'] + 0.1]
         indexed_avg = {}
         for k, v in indexed.items():
             indexed_avg[k] = np.average(v)
@@ -155,4 +156,16 @@ class Ranker:
         self.plaintexts_decrypt_time()
         self.plaintexts_encrypt_memory()
         self.plaintexts_decrypt_memory()
-        pass
+        json.dump(self.average_encrypt_time, open("average_encrypt_time.json", 'w'))
+        json.dump(self.average_decrypt_time, open("average_decrypt_time.json", 'w'))
+        json.dump(self.average_memory_encrypt, open("average_memory_encrypt.json", 'w'))
+        json.dump(self.average_memory_decrypt, open("average_memory_decrypt.json", 'w'))
+        json.dump(self.encrypt_time_score, open("encrypt_time_score", 'w'))
+        json.dump(self.decrypt_time_score, open("decrypt_time_score.json", 'w'))
+        json.dump(self.memory_encrypt_score, open("memory_encrypt_score.json", 'w'))
+        json.dump(self.memory_decrypt_score, open("memory_decrypt_score.json", 'w'))
+        json.dump(self.plaintexts_encrypt_time_score, open("plaintexts_encrypt_time_score.json", 'w'))
+        json.dump(self.plaintexts_decrypt_time_score, open("plaintexts_decrypt_time_score.json", 'w'))
+        json.dump(self.plaintexts_encrypt_memory_score, open("plaintexts_encrypt_memory_score.json", 'w'))
+        json.dump(self.plaintexts_decrypt_memory_score, open("plaintexts_decrypt_memory_score.json", 'w'))
+
